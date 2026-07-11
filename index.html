@@ -727,26 +727,49 @@ footer ul li a:hover{color:var(--orange-600);padding-left:4px;}
       <p>Fill out the form and our team will contact you within 24 hours.</p>
     </div>
     <div class="contact-grid" data-reveal>
-      <form class="contact-form" onsubmit="event.preventDefault(); this.reset(); alert('Thank you! We will contact you within 24 hours.');">
-        <div class="form-row">
-          <div class="field"><label>Full Name</label><input type="text" placeholder="Enter your name" required></div>
-          <div class="field"><label>Phone Number</label><input type="tel" placeholder="03XX-XXXXXXX" required></div>
-        </div>
-        <div class="form-row">
-          <div class="field"><label>Email Address</label><input type="email" placeholder="you@example.com"></div>
-          <div class="field"><label>Grade / Class</label>
-            <select required>
-              <option value="">Select Grade</option>
-              <option>Grade 1 – 5</option>
-              <option>Grade 6 – 8</option>
-              <option>Matric (9 – 10)</option>
-              <option>FSc (11 – 12)</option>
-            </select>
-          </div>
-        </div>
-        <div class="field"><label>Message</label><textarea placeholder="Tell us about your subjects of interest..."></textarea></div>
-        <button type="submit" class="btn btn-orange btn-block"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
-      </form>
+    <form id="contactForm" class="contact-form">
+
+  <div class="form-row">
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+    </div>
+
+    <div class="field">
+      <label>Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="03XX-XXXXXXX" required>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required>
+    </div>
+
+    <div class="field">
+      <label>Grade / Class</label>
+      <select id="grade" name="grade" required>
+        <option value="">Select Grade</option>
+        <option>Grade 1 – 5</option>
+        <option>Grade 6 – 8</option>
+        <option>Matric (9 – 10)</option>
+        <option>FSc (11 – 12)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Message</label>
+    <textarea id="message" name="message" placeholder="Tell us about your subjects of interest..." required></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-orange btn-block">
+    <i class="fa-solid fa-paper-plane"></i>
+    Send Message
+  </button>
+
+</form>
       <div class="contact-side">
         <div class="info-card"><div class="ic"><i class="fa-solid fa-location-dot"></i></div><div><h5>Our Location</h5><p>Online/Physical Education Platform, Serving Students Across Pakistan</p></div></div>
         <div class="info-card"><div class="ic"><i class="fa-solid fa-phone"></i></div><div><h5>Call Us</h5><p>0319-8019777 (WhatsApp Available)</p></div></div>
@@ -866,6 +889,39 @@ toTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 const headerEl=document.querySelector('header');
 window.addEventListener('scroll',()=>{
   headerEl.style.boxShadow= window.scrollY>10 ? '0 8px 24px -12px rgba(61,25,98,0.15)' : 'none';
+});
+</script>
+  <script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbxVc-9xZjSaZoM25ZfjItsO1JcT3QGuLAKzbneZFhziZSvkPeUNA0dabn0CKbb7-i1qRg/exec";
+
+const form = document.getElementById("contactForm");
+
+form.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        grade: document.getElementById("grade").value,
+        message: document.getElementById("message").value
+    };
+
+    try{
+        await fetch(scriptURL,{
+            method:"POST",
+            body:JSON.stringify(data)
+        });
+
+        alert("✅ Thank you! Your message has been sent successfully.");
+        form.reset();
+
+    }catch(error){
+        alert("❌ Error sending message.");
+        console.log(error);
+    }
+
 });
 </script>
 </body>
